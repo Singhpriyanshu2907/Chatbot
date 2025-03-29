@@ -1,0 +1,283 @@
+
+[
+    {
+    "name": "White Butterfly (Syngonium Podophyllum)",
+    "category": "Plant",
+    "description": "A beautiful and easy-to-care-for houseplant with arrow-shaped leaves that feature striking white and green variegation. Perfect for adding a touch of nature to any indoor space.",
+    "price": "₹100",
+    "rating": 4.5
+  },
+  {
+    "name": "Peace Lily",
+    "category": "Plant",
+    "description": "An elegant flowering plant known for its air-purifying qualities and beautiful white blooms. Thrives in low light conditions, making it perfect for offices and homes.",
+    "price": "₹150",
+    "rating": 4.7
+  },
+  {
+    "name": "Chlorophytum Spider Plant",
+    "category": "Plant",
+    "description": "A resilient and fast-growing plant with arching green and white striped leaves. Excellent for hanging baskets and known for its air-purifying properties.",
+    "price": "₹100",
+    "rating": 4.4
+  },
+  {
+    "name": "Money Plant Marble Prince",
+    "category": "Plant",
+    "description": "A popular variety of money plant with stunning marbled green and white leaves. Believed to bring good luck and prosperity while being extremely easy to maintain.",
+    "price": "₹150",
+    "rating": 4.6
+  },
+  {
+    "name": "Snake Plant (Sansevieria)",
+    "category": "Plant",
+    "description": "An extremely hardy plant with tall, upright leaves that feature yellow edges. Known for thriving in neglect and purifying indoor air by removing toxins.",
+    "price": "₹200",
+    "rating": 4.8
+  },
+  {
+    "name": "Aglaonema Lipstick",
+    "category": "Plant",
+    "description": "A colorful tropical plant with glossy green leaves accented by pink edges. Adds vibrant color to any space while being relatively low-maintenance.",
+    "price": "₹300",
+    "rating": 4.5
+  },
+  {
+    "name": "Jade Plant (Portulacaria afra)",
+    "category": "Plant",
+    "description": "A succulent plant with small, round green leaves and reddish stems. Often called 'Dwarf Jade' and known for being drought-tolerant and easy to propagate.",
+    "price": "₹200",
+    "rating": 4.6
+  },
+  {
+    "name": "Rubber Tree (Ficus elastica)",
+    "category": "Plant",
+    "description": "A striking indoor tree with large, glossy leaves that range from deep green to burgundy. Grows tall over time and makes a dramatic statement in any room.",
+    "price": "₹300",
+    "rating": 4.7
+  },
+  {
+    "name": "Krishna Tulsi Plant(Black)",
+    "category": "Herb",
+    "description": "A sacred variety of holy basil with dark purple leaves and strong medicinal properties. Used in Ayurveda for its health benefits and spiritual significance.",
+    "price": "₹50",
+    "rating": 4.8
+  },
+  {
+    "name": "Lemon Grass",
+    "category": "Herb",
+    "description": "A fragrant culinary and medicinal herb with long, slender leaves. Used in teas, soups, and Asian cuisine while also repelling mosquitoes naturally.",
+    "price": "₹50",
+    "rating": 4.5
+  },
+  {
+    "name": "Curry Leaves",
+    "category": "Herb",
+    "description": "An essential herb in Indian cooking with aromatic leaves that add distinct flavor to dishes. The plant is small and shrub-like, producing leaves year-round.",
+    "price": "₹50",
+    "rating": 4.7
+  },
+  {
+    "name": "Rama Tulsi Plant",
+    "category": "Herb",
+    "description": "The green variety of holy basil, revered in Hindu culture and valued for its medicinal properties. Used in teas and herbal remedies for its health benefits.",
+    "price": "₹50",
+    "rating": 4.7
+  },
+  {
+    "name": "Ajwain Leaves",
+    "category": "Herb",
+    "description": "A medicinal herb with small, fragrant leaves used in traditional medicine. Known for aiding digestion and having a thyme-like flavor when used in cooking.",
+    "price": "₹100",
+    "rating": 4.3
+  },
+  {
+    "name": "Mentha Arvensis (Japanese Mint)",
+    "category": "Herb",
+    "description": "A vigorous mint variety with refreshing aroma and flavor. Used in teas, culinary dishes, and for its essential oil which has cooling properties.",
+    "price": "₹100",
+    "rating": 4.6
+  },
+  {
+    "name": "Black Turmeric Plant (Black Haldi)",
+    "category": "Herb",
+    "description": "A rare variety of turmeric with dark blue-black rhizomes. Highly valued in traditional medicine for its potent therapeutic properties and spiritual uses.",
+    "price": "₹300",
+    "rating": 4.8
+  },
+  {
+    "name": "Bhuiamla",
+    "category": "Herb",
+    "description": "A medicinal herb known as Stonebreaker, traditionally used for kidney and liver health. Features small green leaves and yellow flowers.",
+    "price": "₹100",
+    "rating": 4.4
+  },
+  {
+    "name": "Wild Asparagus",
+    "category": "Herb",
+    "description": "A perennial plant with feathery foliage and edible shoots. Known for its nutritional value and use in gourmet cooking and herbal medicine.",
+    "price": "₹200",
+    "rating": 4.5
+  },
+  {
+    "name": "Jasminum sambac",
+    "category": "Flower",
+    "description": "The famous Arabian jasmine with intensely fragrant white flowers. Used in perfumes, teas, and religious ceremonies across many cultures.",
+    "price": "₹150",
+    "rating": 4.8
+  },
+  {
+    "name": "Parijat Tree",
+    "category": "Flower",
+    "description": "The mystical night-flowering jasmine with fragrant white and orange blossoms that fall at dawn. Featured in many Indian legends and traditional medicines.",
+    "price": "₹300",
+    "rating": 4.7
+  },
+  {
+    "name": "Rose",
+    "category": "Flower",
+    "description": "The classic flowering plant available in countless varieties and colors. Prized for its beautiful blooms and fragrance that enhances any garden.",
+    "price": "₹100",
+    "rating": 4.7
+  },
+  {
+    "name": "Raat Rani",
+    "category": "Flower",
+    "description": "The night-blooming jasmine that releases its intoxicating fragrance after sunset. A must-have for moon gardens and romantic outdoor spaces.",
+    "price": "₹200",
+    "rating": 4.8
+  },
+  {
+    "name": "Shevanti",
+    "category": "Flower",
+    "description": "Chrysanthemum flowers that bloom in vibrant colors during autumn. Popular in gardens and floral arrangements for their long-lasting blooms.",
+    "price": "₹100",
+    "rating": 4.5
+  },
+  {
+    "name": "Marigold (Orange)",
+    "category": "Flower",
+    "description": "Bright orange flowers that bloom profusely and are used in festivals and religious ceremonies. Easy to grow and helps repel garden pests naturally.",
+    "price": "₹50",
+    "rating": 4.6
+  },
+  {
+    "name": "Champa (White)",
+    "category": "Flower",
+    "description": "Frangipani tree with highly fragrant white flowers and glossy leaves. A tropical beauty that adds elegance and perfume to any garden space.",
+    "price": "₹200",
+    "rating": 4.8
+  },
+  {
+    "name": "Rajnigandha",
+    "category": "Flower",
+    "description": "Tuberose flowers known for their powerful sweet fragrance that intensifies at night. Popular in perfumery and traditional flower garlands.",
+    "price": "₹100",
+    "rating": 4.7
+  },
+  {
+    "name": "Fragrant Panama rose",
+    "category": "Flower",
+    "description": "A vigorous climbing rose with clusters of small, intensely fragrant pink flowers. Blooms repeatedly and makes excellent cut flowers.",
+    "price": "₹300",
+    "rating": 4.6
+  },
+  {
+    "name": "Pincushion Cactus",
+    "category": "Cactus",
+    "description": "A small, globular cactus covered in colorful spines. Produces vibrant flowers and stays compact, perfect for windowsill gardens.",
+    "price": "₹150",
+    "rating": 4.5
+  },
+  {
+    "name": "Bunny Ear Cactus",
+    "category": "Cactus",
+    "description": "A cute, pad-forming cactus resembling bunny ears. Features yellow glochids instead of long spines, making it less dangerous than other cacti.",
+    "price": "₹200",
+    "rating": 4.6
+  },
+  {
+    "name": "Echinopsis chamaecereus - Cactus",
+    "category": "Cactus",
+    "description": "Also called Peanut Cactus for its finger-like stems. Produces spectacular large orange-red flowers that contrast beautifully with the green stems.",
+    "price": "₹250",
+    "rating": 4.5
+  },
+  {
+    "name": "Golden Pipe Cactus",
+    "category": "Cactus",
+    "description": "A columnar cactus that grows tall with golden spines. Makes a dramatic statement in xeriscapes and requires minimal care.",
+    "price": "₹300",
+    "rating": 4.4
+  },
+  {
+    "name": "Moon Cactus (Grafted)",
+    "category": "Cactus",
+    "description": "A colorful grafted cactus with a bright red, orange, or yellow top on green rootstock. Adds vibrant color to any cactus collection.",
+    "price": "₹300",
+    "rating": 4.3
+  },
+  {
+    "name": "Graptoveria opalina - Succulent Plant",
+    "category": "Succulent",
+    "description": "A beautiful rosette-forming succulent with opalescent pink-tinged leaves. Drought-tolerant and perfect for container gardens.",
+    "price": "₹250",
+    "rating": 4.6
+  },
+  {
+    "name": "Crassula tetragona - Succulent Plant",
+    "category": "Succulent",
+    "description": "A unique succulent with upright, narrow leaves forming miniature pine tree-like shapes. Easy to grow and quite drought resistant.",
+    "price": "₹200",
+    "rating": 4.5
+  },
+  {
+    "name": "Aloevera",
+    "category": "Succulent",
+    "description": "The famous medicinal succulent with thick, gel-filled leaves. Used for skin care, burns, and its air-purifying properties in homes.",
+    "price": "₹100",
+    "rating": 4.8
+  },
+  {
+    "name": "Euphorbia (Red)",
+    "category": "Succulent",
+    "description": "A striking succulent with red-tinged foliage and architectural form. Adds bold color and texture to succulent arrangements.",
+    "price": "₹300",
+    "rating": 4.5
+  },
+  {
+    "name": "Vermicompost",
+    "category": "Fertilizer",
+    "description": "Organic fertilizer produced by worms, rich in nutrients and beneficial microorganisms. Improves soil structure and plant health naturally.",
+    "price": "₹10/kg",
+    "rating": 4.7
+  },
+  {
+    "name": "Vermicompost Mixture",
+    "category": "Fertilizer",
+    "description": "A special blend of vermicompost with other organic amendments for enhanced plant growth. Provides balanced nutrition for all types of plants.",
+    "price": "₹20/kg",
+    "rating": 4.8
+  },
+  {
+    "name": "Dec-Neemo (Bio-fertilizer)",
+    "category": "Fertilizer",
+    "description": "Organic neem-based fertilizer that nourishes plants while protecting against pests. Improves soil health and plant immunity naturally.",
+    "price": "₹150/ltr",
+    "rating": 4.6
+  },
+  {
+    "name": "Dec-Mori (Bio-fertilizer)",
+    "category": "Fertilizer",
+    "description": "A moringa-based organic plant tonic that boosts growth and flowering. Rich in nutrients and growth hormones derived from moringa leaves.",
+    "price": "₹150",
+    "rating": 4.5
+  },
+  {
+    "name": "Agni Shield",
+    "category": "Plant Care",
+    "description": "An organic plant protector that strengthens plants against environmental stress. Helps plants withstand heat, drought, and other challenging conditions.",
+    "price": "₹300",
+    "rating": 4.4
+  }
+  ]
