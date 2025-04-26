@@ -1,82 +1,115 @@
-from openai import OpenAI
 import os
-import dotenv
-dotenv.load_dotenv()
-from .utils import get_chatbot_response,double_check_json_output
 import json
 from copy import deepcopy
-
-
-
-
-
+import boto3
+from .utils import get_chatbot_response
 
 class GuardAgent():
-
     def __init__(self):
-        self.client = OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY"),
-            base_url=os.getenv("OPENAI_API_BASE"),
+        self.client = boto3.client(
+            service_name='bedrock-runtime',
+            region_name=os.getenv("AWS_REGION", "us-east-1")
         )
-        self.model_name=os.getenv("OPENAI_MODEL_NAME")
+        self.model_name = os.getenv("BEDROCK_MODEL_NAME", "mistral.mistral-7b-instruct-v0:2")
 
-    def get_reposnse(self,message):
+    def get_response(self, message):
         messages = deepcopy(message)
 
+        system_prompt = """<<SYS>>
+You are a helpful AI assistant for a plant-selling store that offers plants and plant-related products.
 
-        system_prompt = """ 
+Your task is to determine if the user's question or request is allowed based on the following rules:
 
-         You are an helpful AI assistant for a Plant-selling store which sells plants and plant-related products.
-         Your task is to determine whether user is asking something relevant to the plant store or not.
+The user is **allowed** to:
+1. Ask questions about the plant store (e.g., location, working hours, plants, fertilizers, compost, or any plant shop-related topic).
+2. Place an order.
+3. Ask for recommendations on what to buy.
 
-         The user is allowed to ask:
-         1. Ask questions about the plant store like location, working hours, Fertilizers, compost, plants and plant shop related question.
-         2. Make an order.
-         3. Ask about reccomendations of what to buy.
+The user is **not allowed** to:
+1. Ask about anything unrelated to the plant store.
+2. Ask questions about the store staff.
+3. Ask questions about the store owner.
+
+You must provide your answer strictly in the following JSON format (no extra text, no code block):
+
+{
+    "chain_of_thought": "Explain briefly which rule the user's input matches",
+    "decision": "allowed" or "not allowed",
+    "message": "Your response to the user. If 'not allowed', reply exactly with: 'Sorry, I can't help you with that. Can I help you with something else?'"
+}
+
+Important:
+- Think carefully about the user's input.
+- Follow the JSON format exactly.
+<</SYS>>"""
 
 
-         The user is not allowed to ask:
-         1. Ask about anything other than the plant store.
-         2. Ask questions about the staff
-         3. Ask about the owner of the store.
+        # Prepare messages in Mistral format
+        input_messages = [{"role": "system", "content": system_prompt}] + messages[-3:]
 
-
-         your output should be in a structred json format like so each key is a string and each value is a string. Make sure to follow the format strictly.
-
-         {
-            "chain of thought": "go over each of the points above and see if the message lies under this point or not. Then you write some thoughts about what point is this input is releavant to.",
-            "decision": "allowed" or "not allowed". pick on of those and only write the word,
-            "message": leave the message empty "" if it is allowed, otherwise write "Sorry, I can't help you with that. Can i help you with something else?"
-         }
-        """
-
-        input_messages = [{"role": "system", "content": system_prompt}]+ messages[-3:]
-
+        # Get response from Mistral
         chatbot_output = get_chatbot_response(
-            self.client,
-            self.model_name,
-            input_messages,
+            client=self.client,
+            model_name=self.model_name,
+            messages=input_messages,
+            temperature=0.1  # Lower temperature for more deterministic decisions
         )
 
-        chatbot_output = double_check_json_output(self.client,self.model_name,chatbot_output)
-
+        # Clean and verify the output
+        chatbot_output = self.clean_json_output(chatbot_output)
         output = self.postprocess(chatbot_output)
 
         return output
-    
+
+    def clean_json_output(self, output):
+        """Ensure the output is valid JSON with all required fields"""
+        try:
+            # Remove any code blocks and whitespace
+            output = output.strip().replace("```json", "").replace("```", "")
+            
+            # Parse JSON
+            parsed = json.loads(output)
+            
+            # Validate required fields
+            required_fields = ["chain_of_thought", "decision", "message"]
+            if not all(field in parsed for field in required_fields):
+                raise ValueError("Missing required fields in JSON output")
+                
+            # Validate decision values
+            if parsed["decision"] not in ["allowed", "not allowed"]:
+                raise ValueError("Invalid decision value")
+                
+            return parsed
+            
+        except (json.JSONDecodeError, ValueError) as e:
+            return {
+                "chain_of_thought": f"Invalid response: {str(e)}",
+                "decision": "not allowed",
+                "message": "Sorry, I can't help you with that. Can I help you with something else?"
+            }
+
     def postprocess(self, output):
         """
         Postprocess the output from the chatbot to ensure it is in the desired format.
         """
-        output = json.loads(output)
+        if not isinstance(output, dict):
+            output = {
+                "chain_of_thought": "Invalid response format",
+                "decision": "not allowed",
+                "message": "Sorry, I can't help you with that. Can I help you with something else?"
+            }
+
+        # Ensure message is never empty for 'not allowed' decisions
+        if output.get("decision", "not allowed") == "not allowed":
+            output["message"] = output.get("message") or "Sorry, I can't help you with that. Can I help you with something else?"
 
         dict_output = {
             "role": "assistant",
-            "content": output["message"],
-            "memory":{
-                "agent":"guard_agent",
-                "guard_decision": output["decision"]
+            "content": output.get("message", ""),
+            "memory": {
+                "agent": "guard_agent",
+                "guard_decision": output.get("decision", "not allowed"),
+                "chain_of_thought": output.get("chain_of_thought", "")
             }
         }
         return dict_output
-

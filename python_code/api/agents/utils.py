@@ -1,17 +1,51 @@
-def get_chatbot_response(client,model_name,messages,temperature=0):
-    input_messages = []
-    for message in messages:
-        input_messages.append({"role": message["role"], "content": message["content"]})
+import json
 
-    response = client.chat.completions.create(
-        model=model_name,
-        messages=input_messages,
-        temperature=temperature,
-        top_p=0.8,
-        max_tokens=2000,
-    ).choices[0].message.content
+
+def get_chatbot_response(client, model_name, messages, temperature=0.9, max_tokens=512):
+    """
+    Gets chatbot response from Mistral 7B on AWS Bedrock
     
-    return response
+    Args:
+        client: boto3 bedrock-runtime client
+        model_name: Model ID (e.g., "mistral.mistral-7b-instruct-v0:2")
+        messages: List of message dicts with "role" and "content"
+        temperature: Creativity control (0-1)
+        max_tokens: Maximum tokens to generate
+        
+    Returns:
+        str: Generated response
+    """
+    # Format conversation history for Mistral
+    formatted_prompt = ""
+    for message in messages:
+        if message["role"] == "system":
+            formatted_prompt += f"<<SYS>>\n{message['content']}\n<</SYS>>\n\n"
+        elif message["role"] == "user":
+            formatted_prompt += f"<s>[INST] {message['content']} [/INST]"
+        elif message["role"] == "assistant":
+            formatted_prompt += f" {message['content']} </s>"
+    
+    body = {
+        "prompt": formatted_prompt,
+        "max_tokens": max_tokens,
+        "temperature": temperature,
+        "top_p": 0.8  # Matching your example
+    }
+    
+    try:
+        response = client.invoke_model(
+            body=json.dumps(body),
+            modelId=model_name,
+            accept='application/json',
+            contentType='application/json'
+        )
+        
+        response_body = json.loads(response['body'].read())
+        return response_body['outputs'][0]['text']
+    
+    except Exception as e:
+        print(f"Error invoking model: {e}")
+        return None
 
 
 
