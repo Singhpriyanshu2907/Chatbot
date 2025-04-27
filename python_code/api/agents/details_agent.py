@@ -111,15 +111,16 @@ class DetailsAgent():
         user_message = messages[-1]['content']
         
         try:
-            # Block order-related responses
+            # Check for order-related keywords - redirect to order agent
             order_keywords = ["order", "buy", "purchase", "add to cart", "checkout"]
             if any(kw in user_message.lower() for kw in order_keywords):
                 return {
                     "role": "assistant",
-                    "content": "For orders, please use our order system. Would you like to start an order now?",
+                    "content": "I'd be happy to help you place an order. Could you please specify which plants you'd like to purchase?",
                     "memory": {
                         "agent": "details_agent",
-                        "action": "order_redirect"
+                        "action": "order_redirect",
+                        "needs_rerouting": True  # Flag for rerouting
                     }
                 }
 
@@ -138,7 +139,7 @@ class DetailsAgent():
             prompt = f"""<<SYS>>
     You are a factual Plantify assistant. Rules:
     1. Answer ONLY using provided documents
-    2. Never discuss orders/payments
+    2. For questions about ordering plants: suggest the user make a clear order request
     3. For missing info: "Please visit www.plantify.com for details"
 
     DOCUMENTS:

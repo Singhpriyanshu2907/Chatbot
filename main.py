@@ -1,85 +1,152 @@
-from python_code.api.agent_controller import AgentController
+# main.py
 import streamlit as st
-from typing import Dict, Any
-import logging
-from datetime import datetime
+from python_code.api.agents.router import RouterAgent
+import json
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
 
-def initialize_chat_session():
-    """Initialize the chat session and agent controller"""
-    if 'messages' not in st.session_state:
-        st.session_state.messages = []
+# Modified CSS with better contrast
+# Set page configuration first
+st.set_page_config(page_title="🌿 Plantify Chat Assistant", page_icon="🌿")
+
+# Dark theme CSS
+st.markdown("""
+<style>
+    /* Main container */
+    .stApp {
+        background-color: #000000;
+        color: #ffffff;
+    }
+
+    /* Chat messages */
+    .stChatMessage {
+        background-color: #1a1a1a;
+        border-radius: 15px;
+        margin: 10px 0;
+    }
+
+    /* User message bubble */
+    [data-testid="stChatMessage"] > div:first-child > div:first-child {
+        background-color: #2e7d32 !important;
+        color: #ffffff !important;
+        border-radius: 15px 15px 0 15px;
+    }
+
+    /* Bot message bubble */
+    [data-testid="stChatMessage"] > div:first-child > div:last-child {
+        background-color: #2d2d2d !important;
+        color: #ffffff !important;
+        border-radius: 15px 15px 15px 0;
+        border: 1px solid #404040 !important;
+    }
+
+    /* Input box */
+    .stChatInput input {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border: 1px solid #404040 !important;
+        border-radius: 10px !important;
+    }
+
+    /* Header */
+    .header {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border: 1px solid #404040;
+    }
+
+    /* Sidebar */
+    .sidebar .stMarkdown {
+        color: #ffffff !important;
+    }
+
+    /* JSON debug info */
+    .stJson {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+    }
+
+    /* Expander header */
+    .streamlit-expanderHeader {
+        color: #ffffff !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Initialize session state
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "assistant", "content": "Hi there! I'm Plantify 🌿, your plant shopping assistant. 🌸 How can I help you today?"}
+    ]
+if "router" not in st.session_state:
+    st.session_state.router = RouterAgent()
+
+# Display chat messages
+for message in st.session_state.messages:
+    avatar = "🌻" if message["role"] == "assistant" else "👤"
+    with st.chat_message(message["role"], avatar=avatar):
+        st.markdown(message["content"])
+        if message.get("memory"):
+            with st.expander("Technical Details"):
+                mem = message["memory"].copy()
+                if mem.get("agent") == "details_agent":
+                    mem.pop("sources", None)
+                    mem.pop("documents_used", None)
+                st.json(mem)
+
+# Chat input with custom placeholder
+user_input = st.chat_input("Ask about plants, place orders, or get recommendations...")
+
+if user_input:
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": user_input})
     
-    if 'controller' not in st.session_state:
+    # Display user message
+    with st.chat_message("user", avatar="👤"):
+        st.markdown(user_input)
+
+    # Get bot response with loading animation
+    with st.spinner("🌱 Growing a response..."):
         try:
-            st.session_state.controller = AgentController()
+            response = st.session_state.router.process_message(st.session_state.messages)
         except Exception as e:
-            st.error(f"❌ Failed to initialize chatbot: {str(e)}")
-            st.stop()
-
-def display_chat_messages():
-    """Display all chat messages in the Streamlit app"""
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-def process_user_input(user_input: str):
-    """Process user input and generate assistant response"""
-    try:
-        input_data = {
-            "input": {
-                "messages": st.session_state.messages + [{"role": "user", "content": user_input}]
+            response = {
+                "role": "assistant",
+                "content": "🌧️ Oops! There was a little shower of problems. Please try again!",
+                "memory": {"error": str(e)}
             }
-        }
-        
-        # Get agent response
-        response = st.session_state.controller.get_response(input_data)
-        
-        # Add messages to session state
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        st.session_state.messages.append({
-            "role": "assistant",
-            "content": response["content"]
-        })
-        
-    except Exception as e:
-        st.error(f"Error processing message: {str(e)}")
-        logger.error("Chat error: %s", str(e))
 
-def main():
-    st.set_page_config(
-        page_title="Plantify Chat Assistant",
-        page_icon="🌿",
-        layout="wide"
-    )
-    
-    st.title("🌿 Plantify Chat Assistant")
-    st.caption("Ask me about plants or place an order!")
-    
-    # Initialize chat session
-    initialize_chat_session()
-    
-    # Display chat messages
-    display_chat_messages()
-    
-    # Chat input
-    if prompt := st.chat_input("Ask me anything about plants..."):
-        # Display user message
-        with st.chat_message("user"):
-            st.markdown(prompt)
-        
-        # Process and display assistant response
-        with st.spinner("Thinking..."):
-            process_user_input(prompt)
-        
-        # Rerun to display new messages
-        st.rerun()
+    # Add assistant response to chat history
+    st.session_state.messages.append(response)
 
-if __name__ == "__main__":
-    main()
+    # Display assistant response
+    with st.chat_message("assistant", avatar="🌻"):
+        st.markdown(response["content"])
+        if response.get("memory"):
+            with st.expander("Technical Details"):
+                mem = response["memory"].copy()
+                if mem.get("agent") == "details_agent":
+                    mem.pop("sources", None)
+                    mem.pop("documents_used", None)
+                st.json(mem)
+
+# Sidebar with additional information
+with st.sidebar:
+    st.markdown("""
+    <div style="text-align:center">
+        <h2>🌿 Plantify Store</h2>
+        <p>Your Urban Gardening Partner</p>
+        <hr>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("**📍 Store Locations**")
+    st.write("- Lucknow\n- Hardoi\n- Barabanki\n- Sandila")
+    
+    st.markdown("**⏰ Opening Hours**")
+    st.write("Daily 10 AM – 8 PM")
+    
+    st.markdown("**📞 Contact Us**")
+    st.write("+91 8960121212\nhello@plantify.in")
+    
+    st.markdown("---")
+    st.markdown("_✨ Caring for plants, nurturing lives_")

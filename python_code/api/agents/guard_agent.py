@@ -22,13 +22,14 @@ Your task is to determine if the user's question or request is allowed based on 
 
 The user is **allowed** to:
 1. Ask questions about the plant store (e.g., location, working hours, plants, fertilizers, compost, or any plant shop-related topic).
-2. Place an order.
+2. Place an order or inquire about ordering any plants or plant products.
 3. Ask for recommendations on what to buy.
+4. Ask about ordering, adding, or purchasing any plant-related items.
 
 The user is **not allowed** to:
-1. Ask about anything unrelated to the plant store.
-2. Ask questions about the store staff.
-3. Ask questions about the store owner.
+1. Ask about topics completely unrelated to plants or the plant store (e.g., politics, news, entertainment).
+2. Ask personal questions about the store staff.
+3. Ask personal questions about the store owner.
 
 You must provide your answer strictly in the following JSON format (no extra text, no code block):
 
@@ -38,9 +39,11 @@ You must provide your answer strictly in the following JSON format (no extra tex
     "message": "Your response to the user. If 'not allowed', reply exactly with: 'Sorry, I can't help you with that. Can I help you with something else?'"
 }
 
-Important:
-- Think carefully about the user's input.
-- Follow the JSON format exactly.
+IMPORTANT RULES:
+- ANY plant-related request should be allowed, even if it's about ordering
+- If the message mentions plant names, ordering, or purchasing, it's allowed
+- If the message is ambiguous but could be plant-related, mark it as allowed
+- When in doubt, choose "allowed" rather than "not allowed"
 <</SYS>>"""
 
 
@@ -82,10 +85,11 @@ Important:
             return parsed
             
         except (json.JSONDecodeError, ValueError) as e:
+            # Default to allowed for plant-related queries
             return {
-                "chain_of_thought": f"Invalid response: {str(e)}",
-                "decision": "not allowed",
-                "message": "Sorry, I can't help you with that. Can I help you with something else?"
+                "chain_of_thought": f"Invalid response: {str(e)}. Defaulting to allowed as safeguard.",
+                "decision": "allowed",
+                "message": "I'd be happy to help with your plant-related query. What would you like to know?"
             }
 
     def postprocess(self, output):
@@ -95,8 +99,8 @@ Important:
         if not isinstance(output, dict):
             output = {
                 "chain_of_thought": "Invalid response format",
-                "decision": "not allowed",
-                "message": "Sorry, I can't help you with that. Can I help you with something else?"
+                "decision": "allowed",
+                "message": "I'd be happy to help with your plant-related query. What would you like to know?"
             }
 
         # Ensure message is never empty for 'not allowed' decisions

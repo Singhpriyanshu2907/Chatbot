@@ -226,7 +226,7 @@ class OrderTakingAgent():
     
     def _format_cart_summary(self, cart, totals):
         """
-        Format cart summary for display
+        Format cart summary for display - FIXED VERSION
         """
         summary = "Your current cart:\n"
         
@@ -240,18 +240,18 @@ class OrderTakingAgent():
         
         # Format items by category
         for category, items in by_category.items():
-            summary += f"\n{category.upper()}:\n"
+            summary += f"\n{category}:\n"
             for item in items:
                 item_total = item["price"] * item["quantity"]
-                summary += f"- {item['name']} (${item['price']:.2f}) x {item['quantity']} = ${item_total:.2f}\n"
+                summary += f"- {item['name']} (₹{item['price']}) x {item['quantity']} = ₹{item_total}\n"
         
         # Format totals
-        summary += f"\nSubtotal: ${totals['subtotal']:.2f}"
+        summary += f"\nSubtotal: ₹{totals['subtotal']}"
         if totals['discount'] > 0:
-            summary += f"\nDiscount: -${totals['discount']:.2f}"
-        summary += f"\nShipping: ${totals['shipping']:.2f}"
-        summary += f"\nTax ({self.tax_rate}%): ${totals['tax']:.2f}"
-        summary += f"\nTotal: ${totals['total']:.2f}"
+            summary += f"\nDiscount: -₹{totals['discount']}"
+        summary += f"\nShipping: ₹{totals['shipping']}"
+        summary += f"\nTax ({self.tax_rate}%): ₹{totals['tax']}"
+        summary += f"\nTotal: ₹{totals['total']}"
         
         return summary
     
