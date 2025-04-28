@@ -1,37 +1,94 @@
+# Plantify Chatbot Project
 
-# 🌿 Plantify Chat Assistant - Your AI-Powered Plant Shopping Companion
-Transform your plant shopping experience with an intelligent chatbot that helps you discover, learn, and order plants effortlessly!
+## Overview
 
-## 🚀 Why Plantify Chat Assistant?
+The Plantify Chatbot is a multi-agent conversational AI designed to assist users with inquiries and orders related to a plant shop. This chatbot is built to provide information about the shop, its products, and to facilitate the order-taking process.
 
-#### ✅ Smart & Friendly - Get instant, accurate answers about plants, store info, and orders
-#### ✅ Seamless Ordering - Add to cart, apply discounts, and checkout in natural conversation
-#### ✅ 24/7 Support - No more waiting for business hours to get plant advice
-#### ✅ Typos? No Problem! - Understands messy spelling ("snake plnt" → "Snake Plant")
+## Features
 
+- **Multi-Agent Architecture**: The chatbot uses a modular design with specialized agents for different tasks:
+  - **Guard Agent**: Filters user inputs for inappropriate or out-of-scope queries.
+  - **Classification Agent**: Determines which agent should handle a user's request (details or order-taking).
+  - **Details Agent**: Provides information about the plant shop, such as location, hours, and product details.
+  - **Order Taking Agent**: Manages the order-taking process, including product selection, cart management, and order confirmation.
+- **Order Management**:
+  - Users can add products to their cart.
+  - The chatbot calculates the total order amount, including discounts.
+- **Product Catalog**: The chatbot has access to a catalog of plants and related products, including prices.
+- **Contextual Conversation**: The chatbot maintains conversation history to provide relevant and contextual responses.
+- **Knowledge Base**: The Details Agent uses a knowledge base to answer user queries about the shop.
+- **Input Validation**: The Guard Agent ensures that user inputs are appropriate and relevant to the plant shop.
+- **Error Handling**: The application includes error handling to gracefully manage unexpected issues.
+- **Conversational UI**: The chatbot is integrated with a Streamlit-based user interface.
 
-## 🌟 Key Features
+## Tools & Technologies
 
-| Feature | Description | Tech Used |
-|---------|-------------|-----------|
-| **AI Guard** | Blocks off-topic questions while welcoming plant lovers | Mistral-7B LLM |
-| **Intent Detection** | Knows when you want to order vs. ask questions | Context-aware classification |
-| **Plant Encyclopedia** | Details on 40+ plants, herbs, and gardening supplies | Knowledge Base + Fuzzy Matching |
-| **Cart Management** | "Add 2 peace lilies" → updates cart automatically | Regex + Product Catalog |
-| **Discount Wizard** | Applies promo codes like "SPRING2023" with smart validation | Rule Engine |
+- **Programming Language**: Python
+- **Framework**: Streamlit (for the user interface)
+- **LLM Interaction**: Boto3 (for interacting with AWS Bedrock)
+- **LLM Model**: Mistral 7B Instruct
+- **Environment Management**: dotenv (for managing environment variables)
+- **Data Structures**: JSON (for data exchange)
+- **Text Processing**: difflib (for fuzzy matching)
+- **AWS Services**:
+  - Bedrock
+- **Key Concepts**:
+  - Multi-agent architecture
+  - Conversational AI
+  - Natural Language Processing (NLP)
+  - Contextual awareness
+  - State management
 
-## 📈 What Makes This Special?
+## Project Structure
 
-| Feature | Description |
-|---------|-------------|
-| 🌱 **Retail-Tuned AI** | Not just a chatbot - built specifically for plant stores |
-| 🛡️ **Fail-Safe Design** | Defaults to helpful mode when uncertain |
-| 🛠️ **Extensible** | Add new plants by editing `order_taking_agent.py` |
+The project is organized into the following files:
 
+- `main.py`: The main application file that sets up the Streamlit UI and initializes the agents.
+- `router.py`: The router agent that directs user messages to the appropriate agent.
+- `guard_agent.py`: The guard agent that filters user inputs.
+- `classification_agent.py`: The classification agent that determines the appropriate agent to handle user requests.
+- `details_agent.py`: The details agent that provides information about the plant shop.
+- `order_taking_agent.py`: The order-taking agent that handles the order process.
+- `utils.py`: Contains utility functions (not provided, but assumed to exist).
+
+## How to Run the Application
+
+1.  **Set up AWS Credentials**: Configure your AWS credentials to access the Bedrock service.
+2.  **Install Dependencies**: Install the required Python packages. (A `requirements.txt` file was not provided, so list the dependencies you used, e.g., `pip install streamlit boto3 python-dotenv`)
+3.  **Set Environment Variables**: Create a `.env` file in the root directory and add the following:
+    ```
+    AWS_REGION=<your_aws_region>
+    BEDROCK_MODEL_NAME=mistral.mistral-7b-instruct-v0:2
+    ```
+    Replace `<your_aws_region>` with your AWS region.
+4.  **Run the Application**: Run the `main.py` script using Streamlit:
+    ```
+    streamlit run main.py
+    ```
+5.  **Interact with the Chatbot**: The chatbot interface will appear in your web browser. You can type your questions or order requests in the chatbox.
+
+## Code Highlights
+
+- **Agent Routing**: The `RouterAgent` class in `router.py` manages the flow of messages between different agents. It uses a guard agent to filter out-of-scope queries, a classification agent to determine the intent, and then routes to either the details agent or the order-taking agent.
+- **Order Taking**: The `OrderTakingAgent` in `order_taking_agent.py` handles the complexities of order management, including product selection, quantity, and total price calculation.
+- **Context Management**: Agents maintain context through the `messages` list, allowing the chatbot to understand the ongoing conversation.
+- **Knowledge Retrieval**: The `DetailsAgent` in `details_agent.py` loads information from external documents to answer user questions about the plant shop.
+- **Input Validation**: The `GuardAgent` in `guard_agent.py` ensures that user inputs are safe and relevant.
+
+## Future Improvements
+
+- **Enhance Knowledge Base**: Expand the knowledge base for the `details_agent` to include more information about plants, care tips, and gardening advice.
+- **Implement User Authentication**: Add user authentication to personalize the shopping experience and store order history.
+- **Integrate Payment Gateway**: Integrate a payment gateway to allow users to complete their orders within the chatbot interface.
+- **Improve Error Handling**: Implement more robust error handling and logging.
+- **Add More Tests**: Add unit and integration tests to ensure the reliability of the chatbot.
+- **Optimize Performance**: Explore ways to optimize the performance of the chatbot, such as caching or asynchronous processing.
+- **Support for more LLMs**: The code uses Mistral 7B, but could be expanded to use other LLMs.
+- **Add a vector store**: The details agent could use a vector store to make knowledge retrieval more efficient.
 
 ## 🏗 How It Works
 
-### 1. Multi-Agent Architecture
+###  Multi-Agent Architecture
 
 ```mermaid
 graph LR
@@ -42,50 +99,4 @@ graph LR
     C -->|"Info?"| F[Details Agent]
     E --> G["🛒 Cart Updated!"]
     F --> H["🌱 Snake Plants love indirect sunlight!"]
-
-
-## Tech Stack
-
-**Core AI:** AWS Bedrock + Mistral-7B
-
-**Conversation Flow:** Node, Express
-
-**Error Handling** Auto-recovery from typos/ambiguities
-
-**Frontend** Streamlit with botanical UI
-
-
-## 🛠 Setup
-
-Install dependencies (Python 3.10+ required)
-
-```bash
-  pip install -r requirements.txt
 ```
-Configure AWS credentials
-
-```bash
-  pip install -r requirements.txt
-```
-Launch!
-
-```bash
-  streamlit run python_code/main.py
-```
-## 🌈 See It in Action
-
-**Scenario**: Customer wants snake plants but misspells it 
-
-```python
-User: "How much for 3 snak plantas?"  
-Bot: "🪴 Found 'Snake Plant'! 3 x ₹200 = ₹600. Add to cart?"  
-
-User: "Apply code SPRING2023"  
-Bot: "🌸 15% discount applied! New total: ₹510"  
-
-
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
