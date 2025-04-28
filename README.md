@@ -25,6 +25,7 @@ Transform your plant shopping experience with an intelligent chatbot that helps 
 
 ### 1. Multi-Agent Architecture
 
+```mermaid
 graph LR
     A[User Query] --> B{Guard Agent}
     B -->|Allowed| C[Classifier Agent]
