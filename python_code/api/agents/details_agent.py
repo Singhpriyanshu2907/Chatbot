@@ -1,7 +1,6 @@
 import os
 import json
 import numpy as np
-import faiss
 import boto3
 from dotenv import load_dotenv
 from copy import deepcopy
